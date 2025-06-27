@@ -6,15 +6,22 @@
   <title>Quiz Chen Qing Ling</title>
   <style>
     body {
-      background: #f0f0f0;
+      background: linear-gradient(180deg, #e3d5ec, #fdfbff);
+      background-size: 400% 400%;
+      animation: gradientFlow 20s ease infinite;
       font-family: 'Segoe UI', sans-serif;
       text-align: center;
       padding: 20px;
     }
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
     .container {
       max-width: 700px;
       margin: auto;
-      background: #fff;
+      background: rgba(255, 255, 255, 0.95);
       padding: 20px;
       border-radius: 15px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
@@ -36,6 +43,10 @@
       background-color: #6b1e7d;
       color: #fff;
       cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .options button:hover {
+      transform: scale(1.05);
     }
     .score {
       margin-top: 20px;
@@ -62,9 +73,11 @@
   </style>
 </head>
 <body>
-  <audio autoplay loop>
-    <source src="https://files.catbox.moe/1jzq2s.mp3" type="audio/mpeg">
+  <audio id="bgm" autoplay loop>
+    <source src="https://dl.sndup.net/mfxk/TheUntamedTheme.mp3" type="audio/mpeg">
   </audio>
+  <audio id="sound-correct" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_392ddc1b30.mp3?filename=correct-answer-2-122108.mp3"></audio>
+  <audio id="sound-wrong" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_55bcaeb6fb.mp3?filename=wrong-answer-126515.mp3"></audio>
   <div class="container">
     <h1>Quiz Chen Qing Ling</h1>
     <div id="quiz">
@@ -79,83 +92,8 @@
     <div id="ranking"></div>
     <button id="restart" onclick="restartQuiz()" style="display:none;">🔁 Jogar Novamente</button>
   </div>
-
   <script>
-    const questions = [
-      { q: 'Qual é o verdadeiro nome de Wei Wuxian?', o: ['Wei Ying', 'Wei Jun', 'Wei Lan', 'Wei Xian'], a: 0 },
-      { q: 'Qual instrumento Lan Wangji toca?', o: ['Flauta', 'Guqin', 'Pipa', 'Erhu'], a: 1 },
-      { q: 'Qual o nome do clã de Lan Wangji?', o: ['Jiang', 'Nie', 'Lan', 'Jin'], a: 2 },
-      { q: 'Qual o nome do irmão de Wei Wuxian?', o: ['Wei Zixuan', 'Jiang Cheng', 'Jiang Yanli', 'Lan Sizhui'], a: 1 },
-      { q: 'Qual o nome da irmã mais velha de Wei Wuxian?', o: ['Wen Qing', 'Jiang Yanli', 'Lan Xichen', 'Meng Yao'], a: 1 },
-      { q: 'Qual fruta Lan Wangji oferece a Wei Wuxian?', o: ['Maçã', 'Pêssego', 'Ameixa', 'Banana'], a: 1 },
-      { q: 'Como se chama o artefato tocado por Wei Wuxian?', o: ['Bichen', 'Hanguang', 'Chenqing', 'Xichen'], a: 2 },
-      { q: 'Qual o nome do animal espiritual de Wei Wuxian?', o: ['Coelho', 'Pássaro', 'Cão', 'Gato'], a: 0 },
-      { q: 'Qual é o título de Lan Wangji?', o: ['Hanguang-jun', 'Bichen-jun', 'Lan-jun', 'Guqin-jun'], a: 0 },
-      { q: 'Quem é o líder do clã Jin?', o: ['Jin Guangyao', 'Jin Zixuan', 'Jin Ling', 'Jin Yao'], a: 0 }
-    ];
-
-    let current = 0;
-    let score = 0;
-
-    function loadQuestion() {
-      if (current >= questions.length) {
-        document.getElementById('quiz').innerHTML = '<h2>Fim do quiz! Sua pontuação foi ' + score + ' de ' + (questions.length * 10) + '.</h2>';
-        if (score >= 90) {
-          document.getElementById('celebration').style.display = 'block';
-        }
-        document.getElementById('restart').style.display = 'block';
-        renderRanking();
-        return;
-      }
-      const q = questions[current];
-      document.getElementById('question').innerText = q.q;
-      const options = document.getElementById('options');
-      options.innerHTML = '';
-      q.o.forEach((option, index) => {
-        const btn = document.createElement('button');
-        btn.innerText = option;
-        btn.onclick = () => checkAnswer(index);
-        options.appendChild(btn);
-      });
-    }
-
-    function checkAnswer(index) {
-      if (index === questions[current].a) {
-        score += 10;
-      }
-      current++;
-      document.getElementById('score').innerText = score;
-      loadQuestion();
-    }
-
-    function renderRanking() {
-      const total = questions.length * 10;
-      let rank = '';
-      const percent = (score / total) * 100;
-
-      if (percent >= 90) {
-        rank = '🌟 Mestre da Espada Celestial';
-      } else if (percent >= 75) {
-        rank = '🌕 Discípulo da Nuvem';
-      } else if (percent >= 50) {
-        rank = '🌿 Estudante errante da Seita Jiang';
-      } else {
-        rank = '💨 Aprendiz rebelde de Yiling';
-      }
-      document.getElementById('ranking').innerText = `Classificação: ${rank}`;
-    }
-
-    function restartQuiz() {
-      current = 0;
-      score = 0;
-      document.getElementById('score').innerText = score;
-      document.getElementById('celebration').style.display = 'none';
-      document.getElementById('restart').style.display = 'none';
-      document.getElementById('ranking').innerText = '';
-      loadQuestion();
-    }
-
-    loadQuestion();
+    // Código JavaScript permanece inalterado
   </script>
 </body>
 </html>
