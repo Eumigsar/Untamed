@@ -14,11 +14,6 @@
       position: relative;
       overflow: hidden;
     }
-    @keyframes gradientFlow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
     .particle {
       position: absolute;
       width: 20px;
@@ -126,6 +121,85 @@
     <button id="restart" onclick="restartQuiz()" style="display:none;">🔁 Jogar Novamente</button>
   </div>
   <script>
+    const questions = [
+      {
+        question: "Qual o nome verdadeiro de Wei Wuxian?",
+        options: ["Wei Ying", "Lan Zhan", "Jiang Cheng", "Wen Ning"],
+        answer: "Wei Ying"
+      },
+      {
+        question: "Qual é o clã que Lan Wangji pertence?",
+        options: ["Clã Jiang", "Clã Nie", "Clã Lan", "Clã Wen"],
+        answer: "Clã Lan"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      document.getElementById("question").textContent = q.question;
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+      q.options.forEach(option => {
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.onclick = () => checkAnswer(option);
+        optionsDiv.appendChild(button);
+      });
+    }
+
+    function checkAnswer(selected) {
+      const correctSound = document.getElementById("sound-correct");
+      const wrongSound = document.getElementById("sound-wrong");
+      const q = questions[currentQuestion];
+      if (selected === q.answer) {
+        score++;
+        correctSound.play();
+      } else {
+        wrongSound.play();
+      }
+      currentQuestion++;
+      document.getElementById("score").textContent = score;
+      if (currentQuestion < questions.length) {
+        setTimeout(showQuestion, 500);
+      } else {
+        endQuiz();
+      }
+    }
+
+    function endQuiz() {
+      document.getElementById("quiz").style.display = "none";
+      document.getElementById("restart").style.display = "block";
+      const ranking = document.getElementById("ranking");
+      if (score >= questions.length * 0.75) {
+        document.getElementById("celebration").style.display = "block";
+        ranking.textContent = "🌟 Você é um verdadeiro discípulo da Nuvem Gentil!";
+      } else {
+        ranking.textContent = "🌀 Continue cultivando para alcançar a iluminação.";
+      }
+    }
+
+    function restartQuiz() {
+      currentQuestion = 0;
+      score = 0;
+      document.getElementById("quiz").style.display = "block";
+      document.getElementById("celebration").style.display = "none";
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("ranking").textContent = "";
+      document.getElementById("score").textContent = score;
+      shuffleQuestions();
+      showQuestion();
+    }
+
+    function shuffleQuestions() {
+      for (let i = questions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [questions[i], questions[j]] = [questions[j], questions[i]];
+      }
+    }
+
     function createParticles(num) {
       for (let i = 0; i < num; i++) {
         const particle = document.createElement('div');
@@ -151,6 +225,8 @@
 
     createParticles(20);
     createRunes(6);
+    shuffleQuestions();
+    showQuestion();
   </script>
 </body>
 </html>
