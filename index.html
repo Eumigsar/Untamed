@@ -14,21 +14,6 @@
       position: relative;
       overflow: hidden;
     }
-    .particle {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: url('https://i.imgur.com/jK7ozlP.png') no-repeat center center;
-      background-size: contain;
-      animation: floatUp 12s linear infinite;
-      opacity: 0.7;
-    }
-    @keyframes floatUp {
-      0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-      20% { opacity: 0.5; }
-      50% { opacity: 0.8; }
-      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
-    }
     .rune {
       position: absolute;
       width: 50px;
@@ -98,6 +83,13 @@
       50% { transform: scale(1.05); }
       100% { transform: scale(1); }
     }
+    #avatar {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      width: 100px;
+      z-index: 2;
+    }
   </style>
 </head>
 <body>
@@ -120,25 +112,163 @@
     <div id="ranking"></div>
     <button id="restart" onclick="restartQuiz()" style="display:none;">🔁 Jogar Novamente</button>
   </div>
+  <img id="avatar" src="https://i.imgur.com/WoI5ShO.png" alt="Avatar de cultivador">
   <script>
     const questions = [
-      {
-        question: "Qual o nome verdadeiro de Wei Wuxian?",
-        options: ["Wei Ying", "Lan Zhan", "Jiang Cheng", "Wen Ning"],
-        answer: "Wei Ying"
-      },
-      {
-        question: "Qual é o clã que Lan Wangji pertence?",
-        options: ["Clã Jiang", "Clã Nie", "Clã Lan", "Clã Wen"],
-        answer: "Clã Lan"
-      }
-    ];
-
-    let currentQuestion = 0;
-    let score = 0;
-
-    function showQuestion() {
-      const q = questions[currentQuestion];
+  // Nível 1 - Iniciante
+  {
+    question: "Qual é o verdadeiro nome de Wei Wuxian?",
+    options: ["Wei Ying", "Lan Zhan", "Jiang Cheng", "Wen Ning"],
+    answer: "Wei Ying"
+  },
+  {
+    question: "Quem é o irmão jurado de Wei Wuxian?",
+    options: ["Lan Wangji", "Jin Guangyao", "Jiang Cheng", "Nie Huaisang"],
+    answer: "Jiang Cheng"
+  },
+  {
+    question: "Qual é o nome da espada de Lan Wangji?",
+    options: ["Bichen", "Suibian", "Shuiyin", "Chenqing"],
+    answer: "Bichen"
+  },
+  {
+    question: "Qual instrumento musical Wei Wuxian usa para controlar cadáveres?",
+    options: ["Guqin", "Flauta", "Tambor", "Violino"],
+    answer: "Flauta"
+  },
+  {
+    question: "Qual é o nome da flauta de Wei Wuxian?",
+    options: ["Suibian", "Chenqing", "Wangji", "Yiling"],
+    answer: "Chenqing"
+  },
+  {
+    question: "Quem é conhecido como o Patriarca Yiling?",
+    options: ["Jiang Cheng", "Nie Mingjue", "Wei Wuxian", "Lan Xichen"],
+    answer: "Wei Wuxian"
+  },
+  {
+    question: "Qual o símbolo do Clã Lan?",
+    options: ["Orquídea", "Fênix", "Espada", "Dragão"],
+    answer: "Orquídea"
+  },
+  {
+    question: "Quantas regras os discípulos do Clã Lan devem seguir?",
+    options: ["52", "1033", "3000", "500"],
+    answer: "3000"
+  },
+  {
+    question: "Quem é Lan Zhan?",
+    options: ["Lan Xichen", "Lan Wangji", "Lan Sizhui", "Lan Jingyi"],
+    answer: "Lan Wangji"
+  },
+  {
+    question: "Qual clã causou a destruição do Clã Jiang?",
+    options: ["Clã Lan", "Clã Wen", "Clã Nie", "Clã Jin"],
+    answer: "Clã Wen"
+  },
+  // Nível 2 - Adepto
+  {
+    question: "Quem foi o líder do Clã Wen durante a guerra?",
+    options: ["Wen Ruohan", "Wen Chao", "Wen Ning", "Wen Qing"],
+    answer: "Wen Ruohan"
+  },
+  {
+    question: "Qual é o nome da espada de Wei Wuxian?",
+    options: ["Chenqing", "Suibian", "Bichen", "Wangji"],
+    answer: "Suibian"
+  },
+  {
+    question: "Por que Suibian não reconhece mais ninguém além de Wei Wuxian?",
+    options: ["Porque está quebrada", "Porque foi selada", "Porque é amaldiçoada", "Porque só reconhece seu mestre verdadeiro"],
+    answer: "Porque só reconhece seu mestre verdadeiro"
+  },
+  {
+    question: "Quem é Lan Xichen?",
+    options: ["Irmão mais velho de Lan Wangji", "Pai de Lan Wangji", "Discípulo de Wei Wuxian", "Primo de Jiang Cheng"],
+    answer: "Irmão mais velho de Lan Wangji"
+  },
+  {
+    question: "Quem é Jin Guangyao?",
+    options: ["Filho ilegítimo de Jin Guangshan", "Líder do Clã Nie", "Cultivador errante", "Discípulo de Lan Qiren"],
+    answer: "Filho ilegítimo de Jin Guangshan"
+  },
+  {
+    question: "Como Wei Wuxian morreu originalmente?",
+    options: ["Assassinado por Lan Wangji", "Em uma explosão", "Foi traído por seus aliados", "Caiu de um penhasco"],
+    answer: "Foi traído por seus aliados"
+  },
+  {
+    question: "Quem é Nie Huaisang?",
+    options: ["Líder do Clã Jin", "Irmão de Nie Mingjue", "Tio de Lan Wangji", "Discípulo de Jiang Cheng"],
+    answer: "Irmão de Nie Mingjue"
+  },
+  {
+    question: "Qual foi a técnica proibida usada por Wei Wuxian para voltar à vida?",
+    options: ["Transferência de alma", "Necromancia", "Invocação de sangue", "Reversão espiritual"],
+    answer: "Transferência de alma"
+  },
+  {
+    question: "Quem é Mo Xuanyu?",
+    options: ["Discípulo de Lan Qiren", "Receptáculo de Wei Wuxian", "Filho de Nie Mingjue", "Cultivador do Clã Wen"],
+    answer: "Receptáculo de Wei Wuxian"
+  },
+  {
+    question: "Qual é a cor característica das roupas do Clã Lan?",
+    options: ["Branco com azul", "Vermelho com dourado", "Preto com roxo", "Verde com prata"],
+    answer: "Branco com azul"
+  },
+  // Nível 3 - Cultivador
+  {
+    question: "Quem tem o título de Hanguang-jun?",
+    options: ["Lan Wangji", "Wei Wuxian", "Lan Qiren", "Jiang Cheng"],
+    answer: "Lan Wangji"
+  },
+  {
+    question: "Qual personagem é conhecido por ser desastrado e estudioso?",
+    options: ["Lan Jingyi", "Jin Ling", "Nie Huaisang", "Wen Ning"],
+    answer: "Nie Huaisang"
+  },
+  {
+    question: "Quem é conhecido como o General Fantasma?",
+    options: ["Lan Sizhui", "Jiang Cheng", "Wen Ning", "Lan Xichen"],
+    answer: "Wen Ning"
+  },
+  {
+    question: "O que está escrito na faixa de cabeça dos membros do Clã Lan?",
+    options: ["Nada", "Os preceitos do clã", "O nome do cultivador", "Segredo de família"],
+    answer: "Nada"
+  },
+  {
+    question: "Quem matou Nie Mingjue?",
+    options: ["Lan Xichen", "Jin Guangyao", "Wen Ruohan", "Wen Ning"],
+    answer: "Jin Guangyao"
+  },
+  {
+    question: "O que Lan Wangji disse a Wei Wuxian 33 vezes?",
+    options: ["Volte para casa", "Não faça isso", "Wei Ying", "Venha comigo"],
+    answer: "Venha comigo"
+  },
+  {
+    question: "Qual técnica de cultivo o Clã Lan é conhecido por ensinar?",
+    options: ["Cultivo espiritual com música", "Domínio da espada", "Controle de chamas", "Invocação de bestas"],
+    answer: "Cultivo espiritual com música"
+  },
+  {
+    question: "O que simboliza a faixa de cabeça do Clã Lan?",
+    options: ["Pureza e autocontrole", "Autoridade", "Lealdade", "Força física"],
+    answer: "Pureza e autocontrole"
+  },
+  {
+    question: "Quem é Jin Ling?",
+    options: ["Sobrinho de Jiang Cheng", "Filho de Jin Guangyao", "Discípulo de Lan Wangji", "Filho de Wei Wuxian"],
+    answer: "Sobrinho de Jiang Cheng"
+  },
+  {
+    question: "Qual é o nome do cão que assusta Wei Wuxian?",
+    options: ["Fada", "Raio", "Flor de Ameixa", "Sombra"],
+    answer: "Fada"
+  }
+];
       document.getElementById("question").textContent = q.question;
       const optionsDiv = document.getElementById("options");
       optionsDiv.innerHTML = "";
@@ -200,18 +330,6 @@
       }
     }
 
-    function createParticles(num) {
-      for (let i = 0; i < num; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
-        particle.style.left = Math.random() * 100 + 'vw';
-        particle.style.animationDelay = (Math.random() * 15) + 's';
-        particle.style.width = (10 + Math.random() * 20) + 'px';
-        particle.style.height = particle.style.width;
-        document.body.appendChild(particle);
-      }
-    }
-
     function createRunes(num) {
       for (let i = 0; i < num; i++) {
         const rune = document.createElement('div');
@@ -223,7 +341,6 @@
       }
     }
 
-    createParticles(20);
     createRunes(6);
     shuffleQuestions();
     showQuestion();
