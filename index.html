@@ -1,452 +1,529 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz Chen Qing Ling</title>
-  <style>
-    body {
-      background: linear-gradient(rgba(227, 213, 236, 0.8), rgba(253, 251, 255, 0.8)), url('https://pbs.twimg.com/media/Eq0kFGDUUAEj9ay.jpg:large') no-repeat center center fixed;
-      background-size: cover;
-      font-family: 'Segoe UI', sans-serif;
-      text-align: center;
-      padding: 20px;
-      position: relative;
-      overflow: hidden;
-    }
-    .rune {
-      position: absolute;
-      width: 50px;
-      height: 50px;
-      background: url('https://i.imgur.com/YaJhOoG.png') no-repeat center center;
-      background-size: contain;
-      animation: rotateRune 10s linear infinite;
-      opacity: 0.2;
-      pointer-events: none;
-    }
-    @keyframes rotateRune {
-      0% { transform: rotate(0deg) scale(1); }
-      50% { transform: rotate(180deg) scale(1.1); }
-      100% { transform: rotate(360deg) scale(1); }
-    }
-    .container {
-      max-width: 700px;
-      margin: auto;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      position: relative;
-      z-index: 1;
-    }
-    h1 {
-      color: #6b1e7d;
-    }
-    .question {
-      font-size: 1.2em;
-      margin-bottom: 20px;
-    }
-    .options button, #restart {
-      display: block;
-      margin: 10px auto;
-      padding: 10px 20px;
-      font-size: 1em;
-      border: none;
-      border-radius: 8px;
-      background-color: #6b1e7d;
-      color: #fff;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-    .options button:hover {
-      transform: scale(1.05);
-    }
-    .score {
-      margin-top: 20px;
-      font-size: 1.2em;
-    }
-    #celebration {
-      display: none;
-      margin-top: 30px;
-    }
-    #celebration img {
-      max-width: 300px;
-      animation: pulse 2s infinite;
-    }
-    #ranking {
-      margin-top: 20px;
-      font-size: 1.2em;
-      font-style: italic;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-    #avatar {
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
-      width: 100px;
-      z-index: 2;
-    }
-  </style>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Quiz The Untamed — Surpresa</title>
+	<style>
+		:root {
+			--primary: #6b1e7d;
+			--primary-2: #8b2aa3;
+			--bg-card: rgba(255, 255, 255, 0.95);
+			--text: #2b1b30;
+			--muted: #6f6675;
+		}
+
+		body {
+			background:
+				linear-gradient(rgba(227, 213, 236, 0.8), rgba(253, 251, 255, 0.8)),
+				url('https://pbs.twimg.com/media/Eq0kFGDUUAEj9ay.jpg:large') no-repeat center center fixed;
+			background-size: cover;
+			font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+			text-align: center;
+			padding: 20px;
+			position: relative;
+			overflow-x: hidden;
+			color: var(--text);
+		}
+
+		.rune {
+			position: absolute;
+			width: 50px;
+			height: 50px;
+			background: url('https://i.imgur.com/YaJhOoG.png') no-repeat center center;
+			background-size: contain;
+			animation: rotateRune 10s linear infinite;
+			opacity: 0.2;
+			pointer-events: none;
+		}
+
+		@keyframes rotateRune {
+			0% {
+				transform: rotate(0deg) scale(1);
+			}
+			50% {
+				transform: rotate(180deg) scale(1.1);
+			}
+			100% {
+				transform: rotate(360deg) scale(1);
+			}
+		}
+
+		.container {
+			max-width: 760px;
+			margin: auto;
+			background: var(--bg-card);
+			padding: 22px;
+			border-radius: 15px;
+			box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+			position: relative;
+			z-index: 1;
+		}
+
+		h1 {
+			color: var(--primary);
+			margin: 10px 0 6px;
+		}
+
+		.subtitle {
+			color: var(--muted);
+			margin: 0 0 18px;
+			font-size: 0.98rem;
+		}
+
+		.badge {
+			display: inline-block;
+			padding: 6px 10px;
+			border-radius: 999px;
+			background: rgba(107, 30, 125, 0.1);
+			color: var(--primary);
+			font-weight: 600;
+			font-size: 0.9rem;
+			margin: 10px 0;
+		}
+
+		.section {
+			margin-top: 16px;
+		}
+
+		.question {
+			font-size: 1.15em;
+			margin: 14px 0 16px;
+		}
+
+		.options button,
+		button.primary,
+		button.secondary {
+			display: block;
+			width: min(520px, 92%);
+			margin: 10px auto;
+			padding: 12px 18px;
+			font-size: 1em;
+			border: none;
+			border-radius: 10px;
+			background-color: var(--primary);
+			color: #fff;
+			cursor: pointer;
+			transition: transform 0.15s, background-color 0.2s;
+		}
+
+		.options button:hover,
+		button.primary:hover {
+			transform: translateY(-1px) scale(1.01);
+			background-color: var(--primary-2);
+		}
+
+		button.secondary {
+			background: rgba(107, 30, 125, 0.08);
+			color: var(--primary);
+			border: 1px solid rgba(107, 30, 125, 0.25);
+		}
+
+		button.secondary:hover {
+			background: rgba(107, 30, 125, 0.14);
+			transform: translateY(-1px);
+		}
+
+		.score {
+			margin-top: 18px;
+			font-size: 1.1em;
+			color: var(--muted);
+		}
+
+		.progress {
+			margin: 8px auto 0;
+			width: min(520px, 92%);
+			height: 8px;
+			background: rgba(0, 0, 0, 0.08);
+			border-radius: 999px;
+			overflow: hidden;
+		}
+
+		.progress > div {
+			height: 100%;
+			background: linear-gradient(90deg, var(--primary), #c24df2);
+			width: 0;
+			transition: width 0.25s ease;
+		}
+
+		#result,
+		#surprise,
+		#quiz,
+		#start {
+			display: none;
+		}
+
+		.card {
+			text-align: left;
+			background: rgba(255, 255, 255, 0.85);
+			border: 1px solid rgba(0, 0, 0, 0.06);
+			border-radius: 12px;
+			padding: 16px;
+			width: min(640px, 94%);
+			margin: 14px auto;
+		}
+
+		.card h2,
+		.card h3 {
+			margin: 0 0 10px;
+			color: var(--primary);
+		}
+
+		.card p {
+			margin: 0 0 10px;
+			line-height: 1.5;
+		}
+
+		.photos {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 10px;
+			margin-top: 12px;
+		}
+
+		.photos img {
+			width: 100%;
+			height: 220px;
+			object-fit: cover;
+			border-radius: 12px;
+			border: 1px solid rgba(0, 0, 0, 0.08);
+		}
+
+		@media (max-width: 560px) {
+			.photos {
+				grid-template-columns: 1fr;
+			}
+			.photos img {
+				height: 220px;
+			}
+		}
+
+		#avatar {
+			position: fixed;
+			bottom: 10px;
+			right: 10px;
+			width: 96px;
+			z-index: 2;
+			opacity: 0.95;
+			filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.15));
+		}
+
+		.small {
+			font-size: 0.92rem;
+			color: var(--muted);
+		}
+
+		.toast {
+			margin: 10px auto 0;
+			width: min(520px, 92%);
+			padding: 10px 12px;
+			border-radius: 12px;
+			background: rgba(107, 30, 125, 0.08);
+			color: var(--primary);
+			font-weight: 600;
+			display: none;
+		}
+	</style>
 </head>
 <body>
-  <audio id="bgm" autoplay loop>
-    <source src="https://dl.sndup.net/mfxk/TheUntamedTheme.mp3" type="audio/mpeg">
-  </audio>
-  <audio id="sound-correct" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_392ddc1b30.mp3?filename=correct-answer-2-122108.mp3"></audio>
-  <audio id="sound-wrong" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_55bcaeb6fb.mp3?filename=wrong-answer-126515.mp3"></audio>
-  <div class="container">
-    <h1>Quiz Chen Qing Ling</h1>
-    <div id="quiz">
-      <div class="question" id="question"></div>
-      <div class="options" id="options"></div>
-      <div class="score">Pontuação: <span id="score">0</span></div>
-    </div>
-    <div id="celebration">
-      <h2>🎁 Você desbloqueou um presente encantado!</h2>
-      <img src="https://i.imgur.com/YsH4vvV.gif" alt="Wei Wuxian e Lan Wangji com presente encantado">
-    </div>
-    <div id="ranking"></div>
-    <button id="restart" onclick="restartQuiz()" style="display:none;">🔁 Jogar Novamente</button>
-  </div>
-  <img id="avatar" src="https://i.imgur.com/WoI5ShO.png" alt="Avatar de cultivador">
-  <script>
-    const questions = [
-  // Nível 1 - Iniciante
-  {
-    question: "Qual é o verdadeiro nome de Wei Wuxian?",
-    options: ["Wei Ying", "Lan Zhan", "Jiang Cheng", "Wen Ning"],
-    answer: "Wei Ying"
-  },
-  {
-    question: "Quem é o irmão jurado de Wei Wuxian?",
-    options: ["Lan Wangji", "Jin Guangyao", "Jiang Cheng", "Nie Huaisang"],
-    answer: "Jiang Cheng"
-  },
-  {
-    question: "Qual é o nome da espada de Lan Wangji?",
-    options: ["Bichen", "Suibian", "Shuiyin", "Chenqing"],
-    answer: "Bichen"
-  },
-  {
-    question: "Qual instrumento musical Wei Wuxian usa para controlar cadáveres?",
-    options: ["Guqin", "Flauta", "Tambor", "Violino"],
-    answer: "Flauta"
-  },
-  {
-    question: "Qual é o nome da flauta de Wei Wuxian?",
-    options: ["Suibian", "Chenqing", "Wangji", "Yiling"],
-    answer: "Chenqing"
-  },
-  {
-    question: "Quem é conhecido como o Patriarca Yiling?",
-    options: ["Jiang Cheng", "Nie Mingjue", "Wei Wuxian", "Lan Xichen"],
-    answer: "Wei Wuxian"
-  },
-  {
-    question: "Qual o símbolo do Clã Lan?",
-    options: ["Orquídea", "Fênix", "Espada", "Dragão"],
-    answer: "Orquídea"
-  },
-  {
-    question: "Quantas regras os discípulos do Clã Lan devem seguir?",
-    options: ["52", "1033", "3000", "500"],
-    answer: "3000"
-  },
-  {
-    question: "Quem é Lan Zhan?",
-    options: ["Lan Xichen", "Lan Wangji", "Lan Sizhui", "Lan Jingyi"],
-    answer: "Lan Wangji"
-  },
-  {
-    question: "Qual clã causou a destruição do Clã Jiang?",
-    options: ["Clã Lan", "Clã Wen", "Clã Nie", "Clã Jin"],
-    answer: "Clã Wen"
-  },
-  // Nível 2 - Adepto
-  {
-    question: "Quem foi o líder do Clã Wen durante a guerra?",
-    options: ["Wen Ruohan", "Wen Chao", "Wen Ning", "Wen Qing"],
-    answer: "Wen Ruohan"
-  },
-  {
-    question: "Qual é o nome da espada de Wei Wuxian?",
-    options: ["Chenqing", "Suibian", "Bichen", "Wangji"],
-    answer: "Suibian"
-  },
-  {
-    question: "Por que Suibian não reconhece mais ninguém além de Wei Wuxian?",
-    options: ["Porque está quebrada", "Porque foi selada", "Porque é amaldiçoada", "Porque só reconhece seu mestre verdadeiro"],
-    answer: "Porque só reconhece seu mestre verdadeiro"
-  },
-  {
-    question: "Quem é Lan Xichen?",
-    options: ["Irmão mais velho de Lan Wangji", "Pai de Lan Wangji", "Discípulo de Wei Wuxian", "Primo de Jiang Cheng"],
-    answer: "Irmão mais velho de Lan Wangji"
-  },
-  {
-    question: "Quem é Jin Guangyao?",
-    options: ["Filho ilegítimo de Jin Guangshan", "Líder do Clã Nie", "Cultivador errante", "Discípulo de Lan Qiren"],
-    answer: "Filho ilegítimo de Jin Guangshan"
-  },
-  {
-    question: "Como Wei Wuxian morreu originalmente?",
-    options: ["Assassinado por Lan Wangji", "Em uma explosão", "Foi traído por seus aliados", "Caiu de um penhasco"],
-    answer: "Foi traído por seus aliados"
-  },
-  {
-    question: "Quem é Nie Huaisang?",
-    options: ["Líder do Clã Jin", "Irmão de Nie Mingjue", "Tio de Lan Wangji", "Discípulo de Jiang Cheng"],
-    answer: "Irmão de Nie Mingjue"
-  },
-  {
-    question: "Qual foi a técnica proibida usada por Wei Wuxian para voltar à vida?",
-    options: ["Transferência de alma", "Necromancia", "Invocação de sangue", "Reversão espiritual"],
-    answer: "Transferência de alma"
-  },
-  {
-    question: "Quem é Mo Xuanyu?",
-    options: ["Discípulo de Lan Qiren", "Receptáculo de Wei Wuxian", "Filho de Nie Mingjue", "Cultivador do Clã Wen"],
-    answer: "Receptáculo de Wei Wuxian"
-  },
-  {
-    question: "Qual é a cor característica das roupas do Clã Lan?",
-    options: ["Branco com azul", "Vermelho com dourado", "Preto com roxo", "Verde com prata"],
-    answer: "Branco com azul"
-  },
-  // Nível 3 - Cultivador
-  {
-    question: "Quem tem o título de Hanguang-jun?",
-    options: ["Lan Wangji", "Wei Wuxian", "Lan Qiren", "Jiang Cheng"],
-    answer: "Lan Wangji"
-  },
-  {
-    question: "Qual personagem é conhecido por ser desastrado e estudioso?",
-    options: ["Lan Jingyi", "Jin Ling", "Nie Huaisang", "Wen Ning"],
-    answer: "Nie Huaisang"
-  },
-  {
-    question: "Quem é conhecido como o General Fantasma?",
-    options: ["Lan Sizhui", "Jiang Cheng", "Wen Ning", "Lan Xichen"],
-    answer: "Wen Ning"
-  },
-  {
-    question: "O que está escrito na faixa de cabeça dos membros do Clã Lan?",
-    options: ["Nada", "Os preceitos do clã", "O nome do cultivador", "Segredo de família"],
-    answer: "Nada"
-  },
-  {
-    question: "Quem matou Nie Mingjue?",
-    options: ["Lan Xichen", "Jin Guangyao", "Wen Ruohan", "Wen Ning"],
-    answer: "Jin Guangyao"
-  },
-  {
-    question: "O que Lan Wangji disse a Wei Wuxian 33 vezes?",
-    options: ["Volte para casa", "Não faça isso", "Wei Ying", "Venha comigo"],
-    answer: "Venha comigo"
-  },
-  {
-    question: "Qual técnica de cultivo o Clã Lan é conhecido por ensinar?",
-    options: ["Cultivo espiritual com música", "Domínio da espada", "Controle de chamas", "Invocação de bestas"],
-    answer: "Cultivo espiritual com música"
-  },
-  {
-    question: "O que simboliza a faixa de cabeça do Clã Lan?",
-    options: ["Pureza e autocontrole", "Autoridade", "Lealdade", "Força física"],
-    answer: "Pureza e autocontrole"
-  },
-  {
-    question: "Quem é Jin Ling?",
-    options: ["Sobrinho de Jiang Cheng", "Filho de Jin Guangyao", "Discípulo de Lan Wangji", "Filho de Wei Wuxian"],
-    answer: "Sobrinho de Jiang Cheng"
-  },
-  {
-    question: "Qual é o nome do cão que assusta Wei Wuxian?",
-    options: ["Fada", "Raio", "Flor de Ameixa", "Sombra"],
-    answer: "Fada"
-  }
+	<audio id="bgm" autoplay loop>
+		<source src="https://dl.sndup.net/mfxk/TheUntamedTheme.mp3" type="audio/mpeg" />
+	</audio>
+	<audio id="sound-correct" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_392ddc1b30.mp3?filename=correct-answer-2-122108.mp3"></audio>
+	<audio id="sound-wrong" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_55bcaeb6fb.mp3?filename=wrong-answer-126515.mp3"></audio>
 
-      // Nível 4 - Mestre
-  {
-    question: "Qual ator interpreta Wei Wuxian em 'The Untamed'?",
-    options: ["Xiao Zhan", "Wang Yibo", "Zhao Lusi", "Dylan Wang"],
-    answer: "Xiao Zhan"
-  },
-  {
-    question: "Quem interpreta Lan Wangji na série?",
-    options: ["Wang Yibo", "Zhu Yilong", "Gong Jun", "Yang Yang"],
-    answer: "Wang Yibo"
-  },
-  {
-    question: "Xiao Zhan é também conhecido por atuar em qual outra área?",
-    options: ["Culinária", "Dança", "Canto", "Esportes"],
-    answer: "Canto"
-  },
-  {
-    question: "Qual grupo idol Wang Yibo integrou?",
-    options: ["UNIQ", "EXO", "TFBOYS", "WayV"],
-    answer: "UNIQ"
-  },
-  {
-    question: "Qual dos atores é conhecido por sua paixão por motos?",
-    options: ["Wang Yibo", "Xiao Zhan", "Ma Tianyu", "Zhu Zanjin"],
-    answer: "Wang Yibo"
-  },
-  {
-    question: "Qual foi o primeiro grande papel de Xiao Zhan na TV?",
-    options: ["The Untamed", "Joy of Life", "Oh! My Emperor", "Ace Troops"],
-    answer: "The Untamed"
-  },
-  {
-    question: "Quem interpretou Jin Guangyao?",
-    options: ["Zhu Zanjin", "Wang Haoxuan", "Liu Haikuan", "Xiao Zhan"],
-    answer: "Zhu Zanjin"
-  },
-  {
-    question: "Em que cidade nasceu Wang Yibo?",
-    options: ["Luoyang", "Xian", "Changsha", "Qingdao"],
-    answer: "Luoyang"
-  },
-  {
-    question: "Quantos episódios tem a série 'The Untamed'?",
-    options: ["50", "45", "60", "33"],
-    answer: "50"
-  },
-  {
-    question: "Qual é o nome do spin-off protagonizado por Wen Ning e Lan Sizhui?",
-    options: ["The Living Dead", "Fatal Journey", "Sword of Truth", "Lanling Mystery"],
-    answer: "The Living Dead"
-  },
-  {
-    question: "Qual episódio marca o beijo espiritual entre os protagonistas?",
-    options: ["Ep. 43", "Ep. 33", "Ep. 11", "Ep. 50"],
-    answer: "Ep. 43"
-  },
-  {
-    question: "Quem é o ator por trás de Lan Xichen?",
-    options: ["Liu Haikuan", "Zhu Yilong", "Wang Zhuocheng", "Yu Bin"],
-    answer: "Liu Haikuan"
-  },
-  {
-    question: "Xiao Zhan também é conhecido por qual nome artístico?",
-    options: ["Sean Xiao", "Zhan Xian", "Jay Xiao", "Z-Dragon"],
-    answer: "Sean Xiao"
-  },
-  {
-    question: "Em qual ano 'The Untamed' foi lançada?",
-    options: ["2019", "2018", "2020", "2017"],
-    answer: "2019"
-  },
-  {
-    question: "Qual ator já foi dançarino de breakdance profissional?",
-    options: ["Wang Yibo", "Xiao Zhan", "Liu Haikuan", "Zhu Zanjin"],
-    answer: "Wang Yibo"
-  },
-  {
-    question: "Qual música da série tornou-se viral e icônica entre os fãs?",
-    options: ["Wu Ji", "Yin Shi", "Unrestrained", "Sound of the Soul"],
-    answer: "Wu Ji"
-  },
-  {
-    question: "Qual ator fez par romântico com Xiao Zhan em comerciais após a série?",
-    options: ["Wang Yibo", "Yu Bin", "Zhao Lusi", "Zhu Zanjin"],
-    answer: "Wang Yibo"
-  },
-  {
-    question: "Em qual plataforma 'The Untamed' foi originalmente transmitida?",
-    options: ["Tencent Video", "Youku", "Netflix", "iQIYI"],
-    answer: "Tencent Video"
-  },
-  {
-    question: "Wang Yibo é conhecido por competir profissionalmente em qual esporte?",
-    options: ["Motociclismo", "Tênis", "Natação", "Esgrima"],
-    answer: "Motociclismo"
-  },
-  {
-    question: "Quantos spin-offs oficiais 'The Untamed' possui?",
-    options: ["2", "1", "3", "Nenhum"],
-    answer: "2"
-  }
- 
-    ];
-      document.getElementById("question").textContent = q.question;
-      const optionsDiv = document.getElementById("options");
-      optionsDiv.innerHTML = "";
-      q.options.forEach(option => {
-        const button = document.createElement("button");
-        button.textContent = option;
-        button.onclick = () => checkAnswer(option);
-        optionsDiv.appendChild(button);
-      });
-    }
+	<div class="container">
+		<h1>Quiz The Untamed</h1>
+		<p class="subtitle">Um teste de cultivo… e um presente no fim.</p>
 
-    function checkAnswer(selected) {
-      const correctSound = document.getElementById("sound-correct");
-      const wrongSound = document.getElementById("sound-wrong");
-      const q = questions[currentQuestion];
-      if (selected === q.answer) {
-        score++;
-        correctSound.play();
-      } else {
-        wrongSound.play();
-      }
-      currentQuestion++;
-      document.getElementById("score").textContent = score;
-      if (currentQuestion < questions.length) {
-        setTimeout(showQuestion, 500);
-      } else {
-        endQuiz();
-      }
-    }
+		<div id="start">
+			<div class="badge">🧧 Entrada na Nuvem Gentil</div>
+			<div class="card">
+				<h3>Olá, <span id="heroName">Aymara</span> (Pacotinho extraviado)</h3>
+				<p>
+					Preparada pra provar que seu coração já decorou cada música, cada olhar e cada caos carinhoso de <strong>Chen Qing Ling</strong>?
+					No final… tem uma surpresa bem nossa.
+				</p>
+				<p class="small">Dica: se o áudio não tocar, toque em qualquer botão para liberar o som no navegador.</p>
+			</div>
+			<button class="primary" onclick="startQuiz()">✨ Começar o quiz</button>
+		</div>
 
-    function endQuiz() {
-      document.getElementById("quiz").style.display = "none";
-      document.getElementById("restart").style.display = "block";
-      const ranking = document.getElementById("ranking");
-      if (score >= questions.length * 0.75) {
-        document.getElementById("celebration").style.display = "block";
-        ranking.textContent = "🌟 Você é um verdadeiro discípulo da Nuvem Gentil!";
-      } else {
-        ranking.textContent = "🌀 Continue cultivando para alcançar a iluminação.";
-      }
-    }
+		<div id="quiz">
+			<div class="badge">📜 Prova de cultivo</div>
+			<div class="progress" aria-label="Progresso">
+				<div id="progressBar"></div>
+			</div>
+			<div class="toast" id="toast"></div>
+			<div class="question" id="question"></div>
+			<div class="options" id="options"></div>
+			<div class="score">Pontuação: <span id="score">0</span> • <span id="qCount">0</span></div>
+		</div>
 
-    function restartQuiz() {
-      currentQuestion = 0;
-      score = 0;
-      document.getElementById("quiz").style.display = "block";
-      document.getElementById("celebration").style.display = "none";
-      document.getElementById("restart").style.display = "none";
-      document.getElementById("ranking").textContent = "";
-      document.getElementById("score").textContent = score;
-      shuffleQuestions();
-      showQuestion();
-    }
+		<div id="result">
+			<div class="badge">🏁 Resultado</div>
+			<div class="card">
+				<h2 id="resultTitle">Você terminou!</h2>
+				<p id="resultSummary"></p>
+				<p id="ranking" class="small"></p>
+			</div>
+			<button class="primary" onclick="openSurprise()">🎁 Abrir surpresa</button>
+			<button class="secondary" onclick="restartQuiz()">🔁 Jogar novamente</button>
+		</div>
 
-    function shuffleQuestions() {
-      for (let i = questions.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [questions[i], questions[j]] = [questions[j], questions[i]];
-      }
-    }
+		<div id="surprise">
+			<div class="badge">🎁 Presente encantado</div>
+			<div class="card">
+				<h2>Para a Aymara (Pacotinho extraviado) — do seu cultivador favorito</h2>
+				<p>
+					Meu amor… agora que a gente mudou pra morar juntas, eu sinto que começamos uma nova fase com a mesma energia de dupla lendária:
+					um pouco <strong>Lan Wangji</strong> (meu lado “sério, responsável e comprometido”), e um pouco <strong>Wei Wuxian</strong>
+					(meu lado “vou inventar uma ideia absurda só pra te ver sorrir”).
+				</p>
+				<p>
+					Eu quero te dizer, do jeitinho mais simples e mais verdadeiro: <strong>eu amo dividir a vida com você</strong>.
+					A rotina, a casa, os planos, os detalhes bobos que viram história — tudo fica melhor quando é com você.
+				</p>
+				<p>
+					E se a nossa vida fosse um episódio, eu escolheria repetir essa temporada mil vezes:
+					a gente juntas, construindo um lar… e eu te amando com a calma de quem tem certeza.
+				</p>
 
-    function createRunes(num) {
-      for (let i = 0; i < num; i++) {
-        const rune = document.createElement('div');
-        rune.classList.add('rune');
-        rune.style.left = Math.random() * 100 + 'vw';
-        rune.style.top = Math.random() * 100 + 'vh';
-        rune.style.animationDelay = Math.random() * 10 + 's';
-        document.body.appendChild(rune);
-      }
-    }
+				<h3>Convite</h3>
+				<p>
+					Aceita um encontro especial pra celebrar essa nova fase? 💜<br />
+					<strong>Vale um jantar / noite perfeita</strong> (escolhido por você) + <strong>um brinde</strong> por nós duas.
+				</p>
+				<p class="small">
+					(Se você quiser, eu personalizo aqui: data, local, “vale massagem”, “vale cinema”, “vale piquenique”…)
+				</p>
 
-    createRunes(6);
-    shuffleQuestions();
-    showQuestion();
-  </script>
+				<h3>Nossas fotos</h3>
+				<div class="photos">
+					<img src="https://placehold.co/800x600/png?text=Foto+1" alt="Foto 1" />
+					<img src="https://placehold.co/800x600/png?text=Foto+2" alt="Foto 2" />
+					<img src="https://placehold.co/800x600/png?text=Foto+3" alt="Foto 3" />
+					<img src="https://placehold.co/800x600/png?text=Foto+4" alt="Foto 4" />
+				</div>
+
+				<div class="section">
+					<p class="small">
+						P.S.: se eu prometo seguir 3000 regras do Clã Lan? Não. Mas prometo a regra mais importante: te escolher todos os dias.
+					</p>
+				</div>
+			</div>
+
+			<button class="secondary" onclick="restartQuiz()">🔁 Voltar pro quiz</button>
+		</div>
+	</div>
+
+	<img id="avatar" src="https://i.imgur.com/WoI5ShO.png" alt="Avatar de cultivador" />
+
+	<script>
+		// =========================
+		// CONFIG RÁPIDA (edite aqui)
+		// =========================
+		const CONFIG = {
+			herName: 'Aymara',
+			herNickname: 'Pacotinho extraviado',
+			minScoreForSpecialRank: 0.75,
+			showToasts: true
+		};
+
+		// Para trocar as fotos: substitua os src acima (Foto 1..4) por links diretos.
+		// Ex.: https://i.imgur.com/SEUARQUIVO.jpg
+
+		// =========================
+		// QUIZ
+		// =========================
+		const questions = [
+			// Nível 1 - Iniciante
+			{ question: 'Qual é o verdadeiro nome de Wei Wuxian?', options: ['Wei Ying', 'Lan Zhan', 'Jiang Cheng', 'Wen Ning'], answer: 'Wei Ying' },
+			{ question: 'Quem é o irmão jurado de Wei Wuxian?', options: ['Lan Wangji', 'Jin Guangyao', 'Jiang Cheng', 'Nie Huaisang'], answer: 'Jiang Cheng' },
+			{ question: 'Qual é o nome da espada de Lan Wangji?', options: ['Bichen', 'Suibian', 'Shuiyin', 'Chenqing'], answer: 'Bichen' },
+			{ question: 'Qual instrumento musical Wei Wuxian usa para controlar cadáveres?', options: ['Guqin', 'Flauta', 'Tambor', 'Violino'], answer: 'Flauta' },
+			{ question: 'Qual é o nome da flauta de Wei Wuxian?', options: ['Suibian', 'Chenqing', 'Wangji', 'Yiling'], answer: 'Chenqing' },
+			{ question: 'Quem é conhecido como o Patriarca Yiling?', options: ['Jiang Cheng', 'Nie Mingjue', 'Wei Wuxian', 'Lan Xichen'], answer: 'Wei Wuxian' },
+			{ question: 'Qual o símbolo do Clã Lan?', options: ['Orquídea', 'Fênix', 'Espada', 'Dragão'], answer: 'Orquídea' },
+			{ question: 'Quantas regras os discípulos do Clã Lan devem seguir?', options: ['52', '1033', '3000', '500'], answer: '3000' },
+			{ question: 'Quem é Lan Zhan?', options: ['Lan Xichen', 'Lan Wangji', 'Lan Sizhui', 'Lan Jingyi'], answer: 'Lan Wangji' },
+			{ question: 'Qual clã causou a destruição do Clã Jiang?', options: ['Clã Lan', 'Clã Wen', 'Clã Nie', 'Clã Jin'], answer: 'Clã Wen' },
+
+			// Nível 2 - Adepto
+			{ question: 'Quem foi o líder do Clã Wen durante a guerra?', options: ['Wen Ruohan', 'Wen Chao', 'Wen Ning', 'Wen Qing'], answer: 'Wen Ruohan' },
+			{ question: 'Qual é o nome da espada de Wei Wuxian?', options: ['Chenqing', 'Suibian', 'Bichen', 'Wangji'], answer: 'Suibian' },
+			{
+				question: 'Por que Suibian não reconhece mais ninguém além de Wei Wuxian?',
+				options: ['Porque está quebrada', 'Porque foi selada', 'Porque é amaldiçoada', 'Porque só reconhece seu mestre verdadeiro'],
+				answer: 'Porque só reconhece seu mestre verdadeiro'
+			},
+			{ question: 'Quem é Lan Xichen?', options: ['Irmão mais velho de Lan Wangji', 'Pai de Lan Wangji', 'Discípulo de Wei Wuxian', 'Primo de Jiang Cheng'], answer: 'Irmão mais velho de Lan Wangji' },
+			{ question: 'Quem é Jin Guangyao?', options: ['Filho ilegítimo de Jin Guangshan', 'Líder do Clã Nie', 'Cultivador errante', 'Discípulo de Lan Qiren'], answer: 'Filho ilegítimo de Jin Guangshan' },
+			{ question: 'Como Wei Wuxian morreu originalmente?', options: ['Assassinado por Lan Wangji', 'Em uma explosão', 'Foi traído por seus aliados', 'Caiu de um penhasco'], answer: 'Foi traído por seus aliados' },
+			{ question: 'Quem é Nie Huaisang?', options: ['Líder do Clã Jin', 'Irmão de Nie Mingjue', 'Tio de Lan Wangji', 'Discípulo de Jiang Cheng'], answer: 'Irmão de Nie Mingjue' },
+			{ question: 'Qual foi a técnica proibida usada por Wei Wuxian para voltar à vida?', options: ['Transferência de alma', 'Necromancia', 'Invocação de sangue', 'Reversão espiritual'], answer: 'Transferência de alma' },
+			{ question: 'Quem é Mo Xuanyu?', options: ['Discípulo de Lan Qiren', 'Receptáculo de Wei Wuxian', 'Filho de Nie Mingjue', 'Cultivador do Clã Wen'], answer: 'Receptáculo de Wei Wuxian' },
+			{ question: 'Qual é a cor característica das roupas do Clã Lan?', options: ['Branco com azul', 'Vermelho com dourado', 'Preto com roxo', 'Verde com prata'], answer: 'Branco com azul' },
+
+			// Nível 3 - Cultivador
+			{ question: 'Quem tem o título de Hanguang-jun?', options: ['Lan Wangji', 'Wei Wuxian', 'Lan Qiren', 'Jiang Cheng'], answer: 'Lan Wangji' },
+			{ question: 'Qual personagem é conhecido por ser desastrado e estudioso?', options: ['Lan Jingyi', 'Jin Ling', 'Nie Huaisang', 'Wen Ning'], answer: 'Nie Huaisang' },
+			{ question: 'Quem é conhecido como o General Fantasma?', options: ['Lan Sizhui', 'Jiang Cheng', 'Wen Ning', 'Lan Xichen'], answer: 'Wen Ning' },
+			{ question: 'O que está escrito na faixa de cabeça dos membros do Clã Lan?', options: ['Nada', 'Os preceitos do clã', 'O nome do cultivador', 'Segredo de família'], answer: 'Nada' },
+			{ question: 'Quem matou Nie Mingjue?', options: ['Lan Xichen', 'Jin Guangyao', 'Wen Ruohan', 'Wen Ning'], answer: 'Jin Guangyao' },
+			{ question: 'O que Lan Wangji disse a Wei Wuxian 33 vezes?', options: ['Volte para casa', 'Não faça isso', 'Wei Ying', 'Venha comigo'], answer: 'Venha comigo' },
+			{ question: 'Qual técnica de cultivo o Clã Lan é conhecido por ensinar?', options: ['Cultivo espiritual com música', 'Domínio da espada', 'Controle de chamas', 'Invocação de bestas'], answer: 'Cultivo espiritual com música' },
+			{ question: 'O que simboliza a faixa de cabeça do Clã Lan?', options: ['Pureza e autocontrole', 'Autoridade', 'Lealdade', 'Força física'], answer: 'Pureza e autocontrole' },
+			{ question: 'Quem é Jin Ling?', options: ['Sobrinho de Jiang Cheng', 'Filho de Jin Guangyao', 'Discípulo de Lan Wangji', 'Filho de Wei Wuxian'], answer: 'Sobrinho de Jiang Cheng' },
+			{ question: 'Qual é o nome do cão que assusta Wei Wuxian?', options: ['Fada', 'Raio', 'Flor de Ameixa', 'Sombra'], answer: 'Fada' }
+		];
+
+		let currentQuestion = 0;
+		let score = 0;
+		let shuffled = [];
+
+		function qs(id) {
+			return document.getElementById(id);
+		}
+
+		function show(elId) {
+			qs(elId).style.display = 'block';
+		}
+
+		function hide(elId) {
+			qs(elId).style.display = 'none';
+		}
+
+		function toast(msg) {
+			if (!CONFIG.showToasts) return;
+			const t = qs('toast');
+			t.textContent = msg;
+			t.style.display = 'block';
+			setTimeout(() => (t.style.display = 'none'), 900);
+		}
+
+		function shuffleQuestions() {
+			shuffled = [...questions];
+			for (let i = shuffled.length - 1; i > 0; i--) {
+				const j = Math.floor(Math.random() * (i + 1));
+				[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+			}
+		}
+
+		function startQuiz() {
+			try {
+				qs('bgm').play();
+			} catch (e) {
+				// ignore
+			}
+			hide('start');
+			hide('surprise');
+			hide('result');
+			show('quiz');
+			currentQuestion = 0;
+			score = 0;
+			qs('score').textContent = '0';
+			shuffleQuestions();
+			showQuestion();
+		}
+
+		function showQuestion() {
+			const q = shuffled[currentQuestion];
+			qs('question').textContent = q.question;
+
+			const optionsDiv = qs('options');
+			optionsDiv.innerHTML = '';
+			q.options.forEach((option) => {
+				const button = document.createElement('button');
+				button.textContent = option;
+				button.onclick = () => checkAnswer(option);
+				optionsDiv.appendChild(button);
+			});
+
+			qs('qCount').textContent = `Pergunta ${currentQuestion + 1} de ${shuffled.length}`;
+			qs('progressBar').style.width = `${((currentQuestion) / shuffled.length) * 100}%`;
+		}
+
+		function checkAnswer(selected) {
+			const correctSound = qs('sound-correct');
+			const wrongSound = qs('sound-wrong');
+			const q = shuffled[currentQuestion];
+
+			if (selected === q.answer) {
+				score++;
+				try {
+					correctSound.currentTime = 0;
+					correctSound.play();
+				} catch (e) {}
+				toast('✨ Acertou!');
+			} else {
+				try {
+					wrongSound.currentTime = 0;
+					wrongSound.play();
+				} catch (e) {}
+				toast('🌀 Quase!');
+			}
+
+			currentQuestion++;
+			qs('score').textContent = String(score);
+			qs('progressBar').style.width = `${(currentQuestion / shuffled.length) * 100}%`;
+
+			if (currentQuestion < shuffled.length) {
+				setTimeout(showQuestion, 450);
+			} else {
+				endQuiz();
+			}
+		}
+
+		function endQuiz() {
+			hide('quiz');
+			hide('surprise');
+			show('result');
+
+			const total = shuffled.length;
+			const pct = score / total;
+			const scoreLine = `<strong>${score}</strong> de <strong>${total}</strong> (${Math.round(pct * 100)}%)`;
+
+			qs('resultTitle').textContent = `Fim do quiz, ${CONFIG.herName}!`;
+			qs('resultSummary').innerHTML = `Você fez ${scoreLine}.`;
+
+			if (pct >= CONFIG.minScoreForSpecialRank) {
+				qs('ranking').textContent = '🌟 Você é um verdadeiro discípulo da Nuvem Gentil — e merece um presente à altura.';
+			} else {
+				qs('ranking').textContent = '🧭 Você cultivou muito bem! Agora vem a melhor parte: a surpresa.';
+			}
+		}
+
+		function openSurprise() {
+			hide('result');
+			hide('quiz');
+			show('surprise');
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+		}
+
+		function restartQuiz() {
+			hide('result');
+			hide('surprise');
+			hide('quiz');
+			show('start');
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+		}
+
+		function createRunes(num) {
+			for (let i = 0; i < num; i++) {
+				const rune = document.createElement('div');
+				rune.classList.add('rune');
+				rune.style.left = Math.random() * 100 + 'vw';
+				rune.style.top = Math.random() * 100 + 'vh';
+				rune.style.animationDelay = Math.random() * 10 + 's';
+				document.body.appendChild(rune);
+			}
+		}
+
+		// Inicialização
+		qs('heroName').textContent = `${CONFIG.herName} (${CONFIG.herNickname})`;
+		createRunes(6);
+		show('start');
+	</script>
 </body>
 </html>
