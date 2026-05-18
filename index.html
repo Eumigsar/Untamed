@@ -267,7 +267,7 @@
 				<p id="resultSummary"></p>
 				<p id="ranking" class="small"></p>
 			</div>
-			<button class="primary" onclick="openSurprise()">🎁 Abrir surpresa</button>
+			<button class="primary" id="openSurpriseBtn" onclick="openSurprise()">🎁 Abrir surpresa</button>
 			<button class="secondary" onclick="restartQuiz()">🔁 Jogar novamente</button>
 		</div>
 
@@ -291,11 +291,14 @@
 
 				<h3>Convite</h3>
 				<p>
-					Aceita um encontro especial pra celebrar essa nova fase? 💜<br />
-					<strong>Vale um jantar / noite perfeita</strong> (escolhido por você) + <strong>um brinde</strong> por nós duas.
+					<strong>19/05</strong> — o dia em que a gente completa <strong>1 ano de namoro</strong>.<br />
+					E eu queria fazer do nosso “capítulo 19” um episódio especial: um <strong>piquenique</strong> com você, do jeitinho que você ama.
+				</p>
+				<p>
+					E depois… <strong>vale dia de dengo</strong>. Oficial, carimbado e sem direito a recurso. 💜
 				</p>
 				<p class="small">
-					(Se você quiser, eu personalizo aqui: data, local, “vale massagem”, “vale cinema”, “vale piquenique”…)
+					(Se eu fosse o Lan Wangji, eu fingiria que é só um convite discreto… mas por dentro eu já estou igual o Wei Wuxian: animada demais pra te ver sorrir.)
 				</p>
 
 				<h3>Nossas fotos</h3>
@@ -326,7 +329,7 @@
 		const CONFIG = {
 			herName: 'Aymara',
 			herNickname: 'Pacotinho extraviado',
-			minScoreForSpecialRank: 0.75,
+			minScoreForSurprise: 0.9,
 			showToasts: true
 		};
 
@@ -487,10 +490,13 @@
 			qs('resultTitle').textContent = `Fim do quiz, ${CONFIG.herName}!`;
 			qs('resultSummary').innerHTML = `Você fez ${scoreLine}.`;
 
-			if (pct >= CONFIG.minScoreForSpecialRank) {
-				qs('ranking').textContent = '🌟 Você é um verdadeiro discípulo da Nuvem Gentil — e merece um presente à altura.';
+			const btn = qs('openSurpriseBtn');
+			if (pct >= CONFIG.minScoreForSurprise) {
+				btn.style.display = 'block';
+				qs('ranking').textContent = '🌟 90%+! Você desbloqueou o presente encantado. Pode abrir!';
 			} else {
-				qs('ranking').textContent = '🧭 Você cultivou muito bem! Agora vem a melhor parte: a surpresa.';
+				btn.style.display = 'none';
+				qs('ranking').textContent = '🔒 O presente encantado fica trancado por um selo de cultivo (precisa de 90% ou mais).';
 			}
 		}
 
