@@ -223,12 +223,34 @@
 			font-weight: 600;
 			display: none;
 		}
+
+		/* Player do YouTube (somente áudio) */
+		#yt-audio {
+			position: fixed;
+			left: -9999px;
+			top: -9999px;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+		}
 	</style>
 </head>
 <body>
-	<audio id="bgm" autoplay loop>
-		<source src="https://dl.sndup.net/mfxk/TheUntamedTheme.mp3" type="audio/mpeg" />
-	</audio>
+	<!--
+		YouTube não permite usar o link normal como MP3.
+		Então a gente embute o vídeo como player invisível e toca/pausa via botão.
+	-->
+	<div id="yt-audio">
+		<iframe
+			id="ytPlayer"
+			src="https://www.youtube.com/embed/lcVNSPXM2Nc?enablejsapi=1&autoplay=0&loop=1&playlist=lcVNSPXM2Nc"
+			title="Tema — The Untamed"
+			frameborder="0"
+			allow="autoplay; encrypted-media"
+			referrerpolicy="strict-origin-when-cross-origin"
+		></iframe>
+	</div>
+
 	<audio id="sound-correct" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_392ddc1b30.mp3?filename=correct-answer-2-122108.mp3"></audio>
 	<audio id="sound-wrong" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_55bcaeb6fb.mp3?filename=wrong-answer-126515.mp3"></audio>
 
@@ -244,8 +266,11 @@
 					Preparada pra provar que seu coração já decorou cada música, cada olhar e cada caos carinhoso de <strong>Chen Qing Ling</strong>?
 					No final… tem uma surpresa bem nossa.
 				</p>
-				<p class="small">Dica: se o áudio não tocar, toque em qualquer botão para liberar o som no navegador.</p>
+				<p class="small">
+					Antes de começar, clique em <strong>“Tocar música”</strong> para ativar o tema (o navegador bloqueia autoplay sem clique).
+				</p>
 			</div>
+			<button class="secondary" onclick="toggleMusic()">🎵 Tocar / Pausar música</button>
 			<button class="primary" onclick="startQuiz()">✨ Começar o quiz</button>
 		</div>
 
@@ -333,14 +358,38 @@
 			showToasts: true
 		};
 
-		// Para trocar as fotos: substitua os src acima (Foto 1..4) por links diretos.
-		// Ex.: https://i.imgur.com/SEUARQUIVO.jpg
+		// =========================
+		// Música (YouTube embed)
+		// =========================
+		let musicPlaying = false;
+		function ytCommand(func) {
+			const iframe = document.getElementById('ytPlayer');
+			if (!iframe) return;
+			iframe.contentWindow.postMessage(
+				JSON.stringify({ event: 'command', func, args: [] }),
+				'*'
+			);
+		}
+
+		function playMusic() {
+			ytCommand('playVideo');
+			musicPlaying = true;
+		}
+
+		function pauseMusic() {
+			ytCommand('pauseVideo');
+			musicPlaying = false;
+		}
+
+		function toggleMusic() {
+			if (musicPlaying) pauseMusic();
+			else playMusic();
+		}
 
 		// =========================
 		// QUIZ
 		// =========================
 		const questions = [
-			// Nível 1 - Iniciante
 			{ question: 'Qual é o verdadeiro nome de Wei Wuxian?', options: ['Wei Ying', 'Lan Zhan', 'Jiang Cheng', 'Wen Ning'], answer: 'Wei Ying' },
 			{ question: 'Quem é o irmão jurado de Wei Wuxian?', options: ['Lan Wangji', 'Jin Guangyao', 'Jiang Cheng', 'Nie Huaisang'], answer: 'Jiang Cheng' },
 			{ question: 'Qual é o nome da espada de Lan Wangji?', options: ['Bichen', 'Suibian', 'Shuiyin', 'Chenqing'], answer: 'Bichen' },
@@ -351,8 +400,6 @@
 			{ question: 'Quantas regras os discípulos do Clã Lan devem seguir?', options: ['52', '1033', '3000', '500'], answer: '3000' },
 			{ question: 'Quem é Lan Zhan?', options: ['Lan Xichen', 'Lan Wangji', 'Lan Sizhui', 'Lan Jingyi'], answer: 'Lan Wangji' },
 			{ question: 'Qual clã causou a destruição do Clã Jiang?', options: ['Clã Lan', 'Clã Wen', 'Clã Nie', 'Clã Jin'], answer: 'Clã Wen' },
-
-			// Nível 2 - Adepto
 			{ question: 'Quem foi o líder do Clã Wen durante a guerra?', options: ['Wen Ruohan', 'Wen Chao', 'Wen Ning', 'Wen Qing'], answer: 'Wen Ruohan' },
 			{ question: 'Qual é o nome da espada de Wei Wuxian?', options: ['Chenqing', 'Suibian', 'Bichen', 'Wangji'], answer: 'Suibian' },
 			{
@@ -367,8 +414,6 @@
 			{ question: 'Qual foi a técnica proibida usada por Wei Wuxian para voltar à vida?', options: ['Transferência de alma', 'Necromancia', 'Invocação de sangue', 'Reversão espiritual'], answer: 'Transferência de alma' },
 			{ question: 'Quem é Mo Xuanyu?', options: ['Discípulo de Lan Qiren', 'Receptáculo de Wei Wuxian', 'Filho de Nie Mingjue', 'Cultivador do Clã Wen'], answer: 'Receptáculo de Wei Wuxian' },
 			{ question: 'Qual é a cor característica das roupas do Clã Lan?', options: ['Branco com azul', 'Vermelho com dourado', 'Preto com roxo', 'Verde com prata'], answer: 'Branco com azul' },
-
-			// Nível 3 - Cultivador
 			{ question: 'Quem tem o título de Hanguang-jun?', options: ['Lan Wangji', 'Wei Wuxian', 'Lan Qiren', 'Jiang Cheng'], answer: 'Lan Wangji' },
 			{ question: 'Qual personagem é conhecido por ser desastrado e estudioso?', options: ['Lan Jingyi', 'Jin Ling', 'Nie Huaisang', 'Wen Ning'], answer: 'Nie Huaisang' },
 			{ question: 'Quem é conhecido como o General Fantasma?', options: ['Lan Sizhui', 'Jiang Cheng', 'Wen Ning', 'Lan Xichen'], answer: 'Wen Ning' },
@@ -414,11 +459,11 @@
 		}
 
 		function startQuiz() {
+			// garante que a música tente tocar após um clique do usuário
 			try {
-				qs('bgm').play();
-			} catch (e) {
-				// ignore
-			}
+				playMusic();
+			} catch (e) {}
+
 			hide('start');
 			hide('surprise');
 			hide('result');
@@ -444,7 +489,7 @@
 			});
 
 			qs('qCount').textContent = `Pergunta ${currentQuestion + 1} de ${shuffled.length}`;
-			qs('progressBar').style.width = `${((currentQuestion) / shuffled.length) * 100}%`;
+			qs('progressBar').style.width = `${(currentQuestion / shuffled.length) * 100}%`;
 		}
 
 		function checkAnswer(selected) {
